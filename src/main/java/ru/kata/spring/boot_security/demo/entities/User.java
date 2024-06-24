@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -16,13 +17,15 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long user_id;
 
+    @NotNull
     private String username;
 
+    @NotNull
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.REFRESH)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
@@ -55,11 +58,11 @@ public class User implements UserDetails {
     }
 
     public Long getId() {
-        return id;
+        return user_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long user_id) {
+        this.user_id = user_id;
     }
 
     @Override
@@ -101,18 +104,18 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+        return Objects.equals(user_id, user.user_id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, roles);
+        return Objects.hash(user_id, username, password, roles);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "user_id=" + user_id +
                 ", name='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +

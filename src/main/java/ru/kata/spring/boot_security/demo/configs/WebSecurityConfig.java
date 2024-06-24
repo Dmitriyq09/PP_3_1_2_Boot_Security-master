@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private UserService userService;
 
-
+    @Lazy
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -56,13 +57,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
+    JdbcUserDetailsManager userDetailsManager(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
-    JdbcUserDetailsManager userDetailsManager(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
