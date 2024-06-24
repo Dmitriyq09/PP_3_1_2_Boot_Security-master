@@ -16,14 +16,13 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
     private String username;
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.REFRESH)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
@@ -33,7 +32,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String password) {
+    public User(String name, String password, Collection<? extends GrantedAuthority> grantedAuthorities) {
         this.username = name;
         this.password = password;
     }
@@ -74,7 +73,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getUsername();
+        return username;
     }
 
     @Override
