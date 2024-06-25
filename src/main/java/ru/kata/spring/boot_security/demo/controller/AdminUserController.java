@@ -6,60 +6,23 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entities.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.imp.UserServiceImpl;
 
 
 import javax.validation.Valid;
-import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class AdminUserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-
-    public AdminUserController(UserService userService) {
+    public AdminUserController(UserServiceImpl userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/")
-    public String getHome() {
-        return "index";
-    }
-
-    @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-        return "registration";
-    }
-
-    @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors())
-            return "registration";
-        userService.saveUser(userForm);
-        return "redirect:/login";
-    }
-
-    @GetMapping("/user")
-    public String getUserPage(Principal principal, Model model) {
-        User user = userService.findByUsername(principal.getName());
-        model.addAttribute("user", user);
-        return "user";
-    }
-
-    @GetMapping
-    public String getAllUsers(Model model) {
-        List<User> allUsers = userService.getAllUsers();
-        model.addAttribute("allUsers", allUsers);
-        return "all_users";
     }
 
     @GetMapping("/admin/add_new_user")
     public String addNewUser(Model model) {
-        User user = new User();
+        User user = new User("admin", "password","ADMIN");
         model.addAttribute("user", user);
         return "user_info";
     }

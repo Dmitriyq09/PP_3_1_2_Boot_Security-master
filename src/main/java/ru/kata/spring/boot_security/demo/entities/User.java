@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @NotNull
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
@@ -35,9 +35,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String password, Collection<? extends GrantedAuthority> grantedAuthorities) {
+    public User(String name, String password, String grantedAuthorities) {
         this.username = name;
         this.password = password;
+        this.roles = roles;
     }
 
     public Collection<Role> getRoles() {
