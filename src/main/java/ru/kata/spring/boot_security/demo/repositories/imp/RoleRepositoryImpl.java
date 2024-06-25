@@ -80,8 +80,15 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public <S extends Role> S save(S entity) {
-        return null;
+        if (entity.getId() == null) {
+            entityManager.persist(entity);
+            return entity;
+        } else {
+            return entityManager.merge(entity);
+        }
     }
+
+
 
     @Override
     public <S extends Role> List<S> saveAll(Iterable<S> entities) {
@@ -129,8 +136,8 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public Role getOne(Long aLong) {
-        return null;
+    public Role getOne(Long id) {
+        return entityManager.getReference(Role.class, id);
     }
 
     @Override

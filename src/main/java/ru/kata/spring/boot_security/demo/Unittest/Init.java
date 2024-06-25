@@ -9,49 +9,41 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
-import java.util.Optional;
+
 
 @Component
 public class Init {
 
-    private RoleRepository roleRepository;
-    private UserService userService;
+    private final RoleRepository roleRepository;
+    private final UserService userService;
 
     public Init(RoleRepository roleRepository, UserService userService) {
         this.roleRepository = roleRepository;
         this.userService = userService;
     }
 
-
     @Transactional
     @PostConstruct
     public void initUsers() {
+        Role adminRole = createRoleIfNotFound("ROLE_ADMIN");
+        Role userRole = createRoleIfNotFound("ROLE_USER");
 
-        createRoleIfNotFound("ROLE_ADMIN");
-        createRoleIfNotFound("ROLE_USER");
-
-        Optional<Role> adminRoleOpt = roleRepository.findByName("ROLE_ADMIN");
-        Optional<Role> userRoleOpt = roleRepository.findByName("ROLE_USER");
-
-        if (adminRoleOpt.isPresent() && userRoleOpt.isPresent()) {
-            Role adminRole = adminRoleOpt.get();
-            Role userRole = userRoleOpt.get();
-
-            User admin = new User("admin", "100");
-            admin.setRoles(Collections.singletonList(adminRole));
-            userService.saveUser(admin);
-
-            User user = new User("user", "100");
-            user.setRoles(Collections.singletonList(userRole));
-            userService.saveUser(user);
-        }
+        createUserIfNotFound("admin", adminRole);
+        createUserIfNotFound("user", userRole);
     }
 
-    private void createRoleIfNotFound(String name) {
-        Optional<Role> roleOpt = roleRepository.findByName(name);
-        if (!roleOpt.isPresent()) {
-            Role role = new Role(name);
-            roleRepository.save(role);
-        }
+    private Role createRoleIfNotFound(String name) {
+        return roleRepository.findByName(name).orElseGet(() -> {
+            Role newRole = new Role(name);
+            return roleRepository.save(newRole);
+        });
+    }
+
+    private void createUserIfNotFound(String username, Role role) {
+        userService.findByUsername(username).orElseGet(() -> {
+            User newUser = new User(username, "100");
+            newUser.setRoles(Collections.singletonList(role));
+            return userService.saveUser(newUser);
+        });
     }
 }

@@ -17,23 +17,22 @@ public class Role implements GrantedAuthority {
     @Column(unique = true)
     private String name;
 
-    @Transient
+
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
-    public Role(String roleUsername) {
+    public Role() {
     }
 
-    public Role(Long id, String name) {
-        this.id = id;
+    public Role(String name) {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

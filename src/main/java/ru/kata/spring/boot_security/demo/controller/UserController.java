@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import ru.kata.spring.boot_security.demo.service.imp.UserServiceImpl;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -29,7 +31,7 @@ public class UserController {
 
     @GetMapping("/user")
     public String getUserPage(Principal principal, Model model) {
-        User user = userService.findByUsername(principal.getName());
+        Optional<User> user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
         return "user";
     }
