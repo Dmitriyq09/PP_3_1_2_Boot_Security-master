@@ -35,10 +35,9 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String password, String grantedAuthorities) {
+    public User(String name, String password) {
         this.username = name;
         this.password = password;
-        this.roles = roles;
     }
 
     public Collection<Role> getRoles() {

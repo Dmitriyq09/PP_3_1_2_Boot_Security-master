@@ -22,7 +22,7 @@ public class AdminUserController {
 
     @GetMapping("/admin/add_new_user")
     public String addNewUser(Model model) {
-        User user = new User("admin", "password","ADMIN");
+        User user = new User("admin", "password");
         model.addAttribute("user", user);
         return "user_info";
     }

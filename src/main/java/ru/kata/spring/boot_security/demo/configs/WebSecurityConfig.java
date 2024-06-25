@@ -16,6 +16,7 @@ import ru.kata.spring.boot_security.demo.service.imp.UserServiceImpl;
 
 import javax.sql.DataSource;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableWebMvc
@@ -69,4 +70,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return authenticationProvider;
     }
+
 }
