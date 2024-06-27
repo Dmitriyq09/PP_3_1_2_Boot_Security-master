@@ -5,10 +5,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.persistence.GenerationType;;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+;
 
 @Entity
 @Table(name = "users")
@@ -46,6 +50,7 @@ public class User implements UserDetails {
         this.surname = surname;
         this.age = age;
     }
+
     public void addRole(Role role) {
         this.roles.add(role);
     }
@@ -90,6 +95,19 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(surname, user.surname) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, surname, age, password, roles);
     }
 
     @Override

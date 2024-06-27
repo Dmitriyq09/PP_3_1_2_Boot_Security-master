@@ -1,8 +1,11 @@
-insert into roles (id, role)
-values (1, 'ROLE_ADMIN'),
-       (2, 'ROLE_USER');
+INSERT INTO roles (role)
+VALUES ('ROLE_ADMIN'), ('ROLE_USER');
 
-insert into users (id, username, surname, age, password)
-values (1, 'admin', 'admin', 35, 'admin'),
-       (2, 'user', 'user', 33, 'admin');
+insert into users (id, name, surname, age, password)
+values (id, 'admin', 'admin', 35, '100'),
+       (id, 'user', 'user', 33, '100');
 
+insert into users_roles (user_id, role_id)
+values (1, 1),
+       (1, 2),
+       (2, 2);
