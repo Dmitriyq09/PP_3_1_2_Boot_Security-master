@@ -23,7 +23,7 @@ public class Init {
     }
 
     @PostConstruct
-    public void initMakeUsers() {
+    public void initUsers() {
         Role admin = new Role("ROLE_ADMIN");
         Role user = new Role("ROLE_USER");
 
