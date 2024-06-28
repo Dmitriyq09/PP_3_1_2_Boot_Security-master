@@ -20,40 +20,29 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
-    @NotEmpty(message = "Name shouldn't be empty")
+    private String firstname;
+    private String lastname;
     private String username;
-    @Column(name = "surname")
-    @NotEmpty(message = "Surname shouldn't be empty")
-    private String surname;
-    @Column(name = "age")
-    @Min(value = 0, message = "Age should be greater 0")
-    private int age;
-
-    @Column(name = "password")
-    @NotEmpty(message = "Write password")
     private String password;
-    @ManyToMany(cascade = {CascadeType.PERSIST},
-            fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "users_roles",
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String surname, String password, Set<Role> roles) {
+    public User(String username, String password) {
         this.username = username;
-        this.surname = surname;
         this.password = password;
-        this.roles = roles;
     }
 
-    public void addRole(Role role) {
-        this.roles.add(role);
+    public User(String firstname, String lastname, String username, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
     }
 
     public Long getId() {
@@ -64,27 +53,25 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
     public void setUsername(String username) {
         this.username = username;
     }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
 
     public void setPassword(String password) {
         this.password = password;
@@ -103,25 +90,26 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(surname, user.surname) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, surname, age, password, roles);
+        return Objects.hash(id, firstname, lastname, username, password, roles);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + username + '\'' +
-                ", surname='" + surname + '\'' +
-                ", age=" + age +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 
-    // методы UserDetails для Spring Security
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

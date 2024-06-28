@@ -92,6 +92,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         Optional<User> optionalUser = userRepository.findByUsername(username);
 
         if (optionalUser.isEmpty()) {
@@ -99,7 +100,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = optionalUser.get();
 
-        // возвращаем только данные для Security
+
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(), mapRoleToAuthorities(user.getRoles()));
     }
