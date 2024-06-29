@@ -8,17 +8,17 @@
 
 <h3>Registration</h3>
 <form th:method="POST" th:action="@{/admin/registration}" th:object="${user}">
-    <label for="username">Enter username: </label>
-    <input type="text" th:field="*{username}" id="username"/>
+    <label for="firstname">Enter username: </label>
+    <input type="text" th:field="*{firstname}" id="firstname"/>
+    <div style="color:red" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">Name Error</div>
+    <br>
+    <label for="lastname">Enter surname: </label>
+    <input type="text" th:field="*{lastname}" id="lastname"/>
+    <div style="color:red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Surname Error</div>
+    <br>
+    <label for="username">Enter age: </label>
+    <input type="number" th:field="*{username}" id="username"/>
     <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
-    <br>
-    <label for="surname">Enter surname: </label>
-    <input type="text" th:field="*{surname}" id="surname"/>
-    <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname Error</div>
-    <br>
-    <label for="age">Enter age: </label>
-    <input type="number" th:field="*{age}" id="age"/>
-    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
     <br>
     <label for="password">Enter password: </label>
     <input type="password" th:field="*{password}" id="password"/>
