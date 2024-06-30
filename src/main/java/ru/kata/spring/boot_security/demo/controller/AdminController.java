@@ -83,7 +83,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
         return "redirect:/admin"; // Перенаправление на список пользователей

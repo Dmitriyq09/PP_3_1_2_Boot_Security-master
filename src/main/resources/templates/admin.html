@@ -86,13 +86,9 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- Начало формы -->
-                                                        <form th:action="@{/admin/edit/{id}(id=${user.getId()})}"
-                                                              th:object="${user}" method="post">
-                                                            <div class="form-group">
-                                                                <label for="edit-id">ID</label>
-                                                                <input type="text" class="form-control" id="edit-id"
-                                                                       th:value="${id}" readonly>
-                                                            </div>
+                                                        <form th:action="@{/admin/update/{id}(id=${user.getId()})}"
+                                                              th:object="${user}" th:method="POST">
+
                                                             <div class="form-group">
                                                                 <label for="edit-firstName">First name</label>
                                                                 <input type="text" class="form-control"
@@ -126,9 +122,8 @@
                                                                 <button type="button" class="btn btn-secondary"
                                                                         data-dismiss="modal">Close
                                                                 </button>
-                                                                <button type="submit" class="btn btn-primary">Save
-                                                                    changes
-                                                                </button>
+                                                                <input type="submit" class="btn btn-primary"
+                                                                       value="Edit"/>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -159,7 +154,7 @@
                                                               th:object="${user}">
                                                             <div class="mb-3">
                                                                 <label for="delete-id"><b>ID</b></label>
-                                                                <!--/*@thymesVar id="id" type=""*/-->
+
                                                                 <input class="form-control" readonly type="text"
                                                                        id="delete-id"
                                                                        th:value="*{id}"
