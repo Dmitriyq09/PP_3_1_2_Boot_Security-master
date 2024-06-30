@@ -71,11 +71,8 @@
                                         <button type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target="'#myModalEdit'+${user.getId()}">Edit
                                         </button>
-                                        <!-- Модальное окно для редактирования -->
                                         <div class="modal fade" id="'myModalEdit'+ ${user.getId()}" tabindex="-1" role="dialog"
                                              aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <!-- Содержимое модального окна для редактирования -->
-                                            <!-- Поля формы заполняются данными текущего пользователя -->
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -109,19 +106,12 @@
                                                                 <input type="password" class="form-control"
                                                                        id="edit-password">
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label for="edit-role">Role</label>
-                                                                <select class="form-select" id="edit-role"
-                                                                        th:field="*{roles}">
-                                                                    <option value="role.id"
-                                                                            th:selected="${user.roles.contains(role)}">
-                                                                        ROLE_ADMIN
-                                                                    </option>
-                                                                    <option value="ROLE_USER"
-                                                                            th:selected="${user.roles.contains(role)}">
-                                                                        ROLE_USER
-                                                                    </option>
+                                                            <div class="mb-3">
+                                                                <label for="edit-roles"><b>Role</b></label>
+                                                                <select class="form-select" aria-label="Default select example" id="edit-roles" th:name="roles" multiple>
+                                                                    <option th:each="role : ${roles}" th:value="${role.id}" th:selected="${user.roles.contains(role)}" th:text="${role.name}"></option>
                                                                 </select>
+
                                                             </div>
                                                             <!-- Кнопки управления формой -->
                                                             <div class="modal-footer">
@@ -142,11 +132,8 @@
                                         <button type="button" class="btn btn-danger" data-toggle="modal"
                                                 data-target="'#myModalDelete'+ ${user.getId()">Delete
                                         </button>
-                                        <!-- Модальное окно для удаления -->
                                         <div class="modal fade" id="myModalDelete" tabindex="-1" role="dialog"
                                              aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <!-- Содержимое модального окна для удаления -->
-                                            <!-- Подтверждение удаления пользователя -->
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">

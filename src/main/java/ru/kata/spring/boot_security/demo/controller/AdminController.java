@@ -25,21 +25,21 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/new")
     public String registrationPage(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getAllRoles());
-        return "redirect:/users_table"; // Шаблон Thymeleaf
+        return "/ADMIN/users_table"; // Шаблон Thymeleaf
     }
 
-    @PostMapping("/registration")
+    @PostMapping("/save")
     public String performRegistration(@ModelAttribute("user") @Valid User user,
                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/ADMIN/users_table"; // Шаблон Thymeleaf
         }
         userService.saveUser(user);
-        return "redirect:/users_table";
+        return "/ADMIN/users_table";
     }
 
     @GetMapping
@@ -67,19 +67,19 @@ public class AdminController {
         return "redirect:/users_table"; // Шаблон Thymeleaf
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/update")
     public String update(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long id,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/ADMIN/users_table"; // Шаблон Thymeleaf
         }
         userService.updateUser(user, id);
-        return "redirect:/users_table";
+        return "/ADMIN/users_table";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
-        return "redirect:/users_table";
+        return "/ADMIN/users_table";
     }
 }

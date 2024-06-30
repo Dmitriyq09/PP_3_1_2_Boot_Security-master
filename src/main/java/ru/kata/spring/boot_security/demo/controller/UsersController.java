@@ -19,14 +19,11 @@ public class UsersController {
         this.userService = userService;
     }
 
-
-    @GetMapping("/show")
+    @GetMapping
     public String user(Model model, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
-        model.addAttribute("userRoles", user.getRoles());
         return "/USER/show";
     }
-
 
 }
