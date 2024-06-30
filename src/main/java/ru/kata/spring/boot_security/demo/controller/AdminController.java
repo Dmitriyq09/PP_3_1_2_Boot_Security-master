@@ -29,18 +29,20 @@ public class AdminController {
     public String registrationPage(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getAllRoles());
-        return "/ADMIN/users_table"; // Шаблон Thymeleaf
+        return "redirect:/admin"; // Шаблон Thymeleaf
     }
 
     @PostMapping("/save")
     public String performRegistration(@ModelAttribute("user") @Valid User user,
-                                      BindingResult bindingResult) {
+                                      BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "/ADMIN/users_table"; // Шаблон Thymeleaf
+            model.addAttribute("roles", roleService.getAllRoles());
+            return "admin"; // Имя шаблона Thymeleaf для отображения формы
         }
         userService.saveUser(user);
-        return "/ADMIN/users_table";
+        return "redirect:/admin"; // Перенаправление на список пользователей
     }
+
 
     @GetMapping
     public String allUsers(Model model, Principal principal) {
@@ -48,7 +50,7 @@ public class AdminController {
         model.addAttribute("userFrom", userFrom);
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", roleService.getAllRoles());
-        return "/ADMIN/users_table"; // Шаблон Thymeleaf
+        return "admin"; // Шаблон Thymeleaf
     }
 
 
@@ -57,29 +59,34 @@ public class AdminController {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         model.addAttribute("roles", user.getRoles());
-        return "/ADMIN/users_table"; // Шаблон Thymeleaf
+        return "redirect:/admin"; // Шаблон Thymeleaf
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
-        return "redirect:/users_table"; // Шаблон Thymeleaf
+        return "admin/edit"; // Имя шаблона Thymeleaf для отображения формы редактирования
     }
 
-    @PatchMapping("/{id}/update")
+
+    @PostMapping("/update/{id}")
     public String update(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long id,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "/ADMIN/users_table"; // Шаблон Thymeleaf
+            model.addAttribute("roles", roleService.getAllRoles());
+            return "admin"; // Имя шаблона Thymeleaf для отображения формы
         }
         userService.updateUser(user, id);
-        return "/ADMIN/users_table";
+        return "redirect:/admin"; // Перенаправление на список пользователей
     }
 
-    @DeleteMapping("/{id}/delete")
+
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
-        return "/ADMIN/users_table";
+        return "redirect:/admin"; // Перенаправление на список пользователей
     }
+
 }

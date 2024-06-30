@@ -74,13 +74,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean deleteUserById(Long id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-            return true;
-        }
-
-        return false;
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 
     @Transactional
