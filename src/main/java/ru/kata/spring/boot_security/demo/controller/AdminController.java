@@ -53,10 +53,10 @@ public class AdminController {
                                BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roleService.getAllRoles());
-            return "admin"; // Имя шаблона Thymeleaf для отображения формы
+            return "redirect:/admin"; // Имя шаблона Thymeleaf для отображения формы
         }
         userService.saveNewUser (user);
-        return "admin"; // Перенаправление на список пользователей
+        return "redirect:/admin"; // Перенаправление на список пользователей
     } //метод обрабатывает регистрацию нового пользователя
 
 
@@ -78,7 +78,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/deleteUser/{id}")
+    @PostMapping("/deleteUser/{id}")
     public String processUserDeletion(@PathVariable("id") Long id) {
         userService.removeUserById(id);
         return "redirect:/admin"; // метод удаляет пользователя
