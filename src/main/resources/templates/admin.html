@@ -26,8 +26,8 @@
             <td th:utext="${user.getRoles()}"></td>
 
             <td>
-                <a class="btn btn-primary" th:href="@{/admin/{id}/edit(id=${user.id})}">Edit</a>
-                <form th:action="@{/admin/{id}(id=${user.id})}" method="post" class="d-inline">
+                <a class="btn btn-primary" th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a>
+                <form th:method="delete" th:action="@{/admin/delete/{id}(id=${user.id})}">
                     <input type="hidden" name="_method" value="delete"/>
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
