@@ -81,7 +81,7 @@ public class AdminController {
     @PostMapping("/deleteUser/{id}")
     public String processUserDeletion(@PathVariable("id") Long id) {
         userService.removeUserById(id);
-        return "redirect:/admin"; // метод удаляет пользователя
+        return "redirect:/admin"; // метод удаляет пользователя.
     }
 
 
