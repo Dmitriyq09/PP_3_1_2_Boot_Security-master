@@ -56,12 +56,12 @@ public class AdminController {
     }
 
 
-    @GetMapping("/{id}/page")
+    @GetMapping("/{id}/panel")
     public String getUserById(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
         model.addAttribute("roles", user.getRoles());
-        return "page"; // Шаблон Thymeleaf
+        return "panel"; // Шаблон Thymeleaf
     }
 
     @GetMapping("/edit/{id}")
