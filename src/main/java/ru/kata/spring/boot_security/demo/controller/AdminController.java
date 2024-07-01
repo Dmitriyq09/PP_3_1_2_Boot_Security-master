@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,74 +18,71 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
 
-    @Autowired
     public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-    @GetMapping("/new")
-    public String registrationPage(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "redirect:/admin"; // Шаблон Thymeleaf
-    }
-
-    @PostMapping("/save")
-    public String performRegistration(@ModelAttribute("user") @Valid User user,
-                                      BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", roleService.getAllRoles());
-            return "admin"; // Имя шаблона Thymeleaf для отображения формы
-        }
-        userService.saveUser(user);
-        return "redirect:/admin"; // Перенаправление на список пользователей
-    }
-
-
-    @GetMapping
-    public String allUsers(Model model, Principal principal) {
-        User userFrom = userService.getUserByUsername(principal.getName());
-        model.addAttribute("userFrom", userFrom);
-        model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("roles", roleService.getAllRoles());
-        return "admin"; // Шаблон Thymeleaf
-    }
-
-
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/{id}/panel")
+    public String showUserPanel(@PathVariable("id") Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         model.addAttribute("roles", user.getRoles());
-        return "redirect:/admin"; // Шаблон Thymeleaf
+        return "panel"; // метод возвращает панель пользователя по ID
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/editUser/{id}")
+    public String showEditUserForm(@PathVariable("id") Long id, Model model) {
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAllRoles());
-        return "admin/edit"; // Имя шаблона Thymeleaf для отображения формы редактирования
+        return "editUser"; // метод отображает форму для редактирования пользователя
     }
 
+    @GetMapping("/new")
+    public String showNewUserForm (@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin"; // Шаблон Thymeleaf
+    } //метод отображает форму для добавления нового пользователя
 
-    @PostMapping("/update/{id}")
-    public String update(@ModelAttribute("user") @Valid User user, @PathVariable("id") Long id,
-                         BindingResult bindingResult, Model model) {
+
+    @PostMapping("/save")
+
+    public String saveNewUser (@ModelAttribute("user") @Valid User user,
+                               BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roleService.getAllRoles());
             return "admin"; // Имя шаблона Thymeleaf для отображения формы
         }
-        userService.updateUser(user, id);
-        return "redirect:/admin"; // Перенаправление на список пользователей
+        userService.saveNewUser (user);
+        return "admin"; // Перенаправление на список пользователей
+    } //метод обрабатывает регистрацию нового пользователя
+
+
+
+    @GetMapping
+    public String showAdminDashboard(@ModelAttribute("user") User user,Model model, Principal principal) {
+        User userFromDB  = userService.getUserByUsername(principal.getName());
+        model.addAttribute("userFromDB", userFromDB);
+        model.addAttribute("roleOfUserFromDB", userFromDB.getRoles());
+        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin"; // метод возвращает главную страницу администратора
     }
 
 
-    @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        userService.deleteUserById(id);
-        return "redirect:/admin"; // Перенаправление на список пользователей
+    @PostMapping("/updateUser/{id}")
+    public String processUserUpdate(@ModelAttribute("user") @Valid User user) {
+        userService.updateExistingUser(user);
+        return "redirect:/admin";
     }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public String processUserDeletion(@PathVariable("id") Long id) {
+        userService.removeUserById(id);
+        return "redirect:/admin"; // метод удаляет пользователя
+    }
+
 
 }

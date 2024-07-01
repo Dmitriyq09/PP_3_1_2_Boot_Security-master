@@ -17,18 +17,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Используем Optional для работы с возможным отсутствием пользователя
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.getUserByUsername(username);
 
         if (optionalUser.isEmpty()) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
         User user = optionalUser.get();
 
-        // возвращаем только данные для Security
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), user.getAuthorities());
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+
+        return new org.springframework.security.core.userdetails.User(
+                customUserDetails.getUsername(),
+                customUserDetails.getPassword(),
+                customUserDetails.getAuthorities());
     }
+
 }

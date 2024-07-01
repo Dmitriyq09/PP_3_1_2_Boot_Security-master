@@ -17,40 +17,38 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Преобразуйте роли пользователя в GrantedAuthority
         return user.getRoles().stream()
                 .map(role -> new CustomGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
-
     @Override
     public String getPassword() {
-        return null;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true; // или возвращайте соответствующее значение из user
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true; // или возвращайте соответствующее значение из user
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true; // или возвращайте соответствующее значение из user
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true; // или возвращайте соответствующее значение из user
     }
-
 }
-

@@ -23,7 +23,7 @@ public class UsersController {
     public String user(Model model, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
-        return "/USER/show";
+        return "/show";
     }
 
 }

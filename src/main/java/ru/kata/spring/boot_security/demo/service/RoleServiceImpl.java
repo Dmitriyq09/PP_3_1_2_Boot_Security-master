@@ -5,12 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
@@ -24,26 +22,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Optional<Role> getUserById(Long id) {
+    public Optional<Role> findRoleById(Long id) {
         return roleRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void addRole(Role role) {
-//        if (checkRolesExist(role)) {
-//            return;
-//        }
         roleRepository.save(role);
     }
 
-//    private boolean checkRolesExist(Role role) {
-//        Iterable<Role> roleIterator = roleRepository.findAll();
-//
-//        while (roleIterator.iterator().hasNext()) {
-//            Role iterRole = roleIterator.iterator().next();
-//            if (iterRole.getRole().equals(role.getRole())) return true;
-//        }
-//
-//        return false;
-//    }
 }
