@@ -43,8 +43,8 @@ public class Init {
         user1.setRoles(adminRoles);
         user2.setRoles(userRoles);
 
-        userService.addUser(user1);
-        userService.addUser(user2);
+        userService.saveNewUser (user1);
+        userService.saveNewUser (user2);
 
     }
 }

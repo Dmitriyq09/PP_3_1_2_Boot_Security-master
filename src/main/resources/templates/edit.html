@@ -47,7 +47,7 @@
                 <label>Roles:</label>
                 <label>
                     <select multiple="multiple" class="form-control" th:field="*{roles}">
-                        <option th:each="role: ${roles}" th:value="${role.id}" th:text="${role.toString()}"></option>
+                        <option th:each="role: ${roles}" th:value="${role.id}" th:text="${role}"></option>
                     </select>
                 </label>
             </div>

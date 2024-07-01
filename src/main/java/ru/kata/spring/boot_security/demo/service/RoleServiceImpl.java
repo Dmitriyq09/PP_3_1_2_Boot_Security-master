@@ -5,12 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
@@ -29,6 +27,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void addRole(Role role) {
         roleRepository.save(role);
     }
