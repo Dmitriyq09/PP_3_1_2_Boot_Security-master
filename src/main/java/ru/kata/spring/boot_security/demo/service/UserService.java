@@ -9,19 +9,19 @@ import java.util.List;
 
 
 @Service
-public interface UserService extends UserDetailsService {
-    void saveUser(User user);
+public interface UserService {
+    void addUser(User user);
+    User getUser(Long id);
 
     void updateUser(User user, Long id);
 
     List<User> getAllUsers();
 
-    User getUserById(Long id);
+    User findRoleById(Long id);
 
-    User getUserByUsername(String username);
+    User findByUsername(String username);
+    User findById(Long id);
 
-    boolean deleteUserById(Long id);
-
-
+    void deleteUser(Long id);
 
 }

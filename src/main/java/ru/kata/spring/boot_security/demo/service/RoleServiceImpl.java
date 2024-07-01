@@ -24,26 +24,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Optional<Role> getUserById(Long id) {
+    public Optional<Role> findRoleById(Long id) {
         return roleRepository.findById(id);
     }
 
     @Override
     public void addRole(Role role) {
-//        if (checkRolesExist(role)) {
-//            return;
-//        }
         roleRepository.save(role);
     }
 
-//    private boolean checkRolesExist(Role role) {
-//        Iterable<Role> roleIterator = roleRepository.findAll();
-//
-//        while (roleIterator.iterator().hasNext()) {
-//            Role iterRole = roleIterator.iterator().next();
-//            if (iterRole.getRole().equals(role.getRole())) return true;
-//        }
-//
-//        return false;
-//    }
 }
