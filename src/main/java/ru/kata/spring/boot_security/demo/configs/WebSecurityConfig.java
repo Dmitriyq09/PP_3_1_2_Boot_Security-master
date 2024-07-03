@@ -27,20 +27,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http
+        http.csrf()
+                .disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll() // аутентификация не требуется
-                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/admin/**").hasRole("ADMIN")  // доступ только админу
-                .anyRequest().authenticated()
+                .antMatchers("/", "/index", "/login").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/user/**").hasAnyRole("ADMIN", "USER")
+                .and().formLogin().successHandler(successUserHandler).permitAll()
                 .and()
-                .formLogin().successHandler(successUserHandler) // обработчик успешной аутентификации
-                .permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login");
+                .logout().logoutSuccessUrl("/login");
     }
 
 

@@ -5,20 +5,23 @@ import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.entities.User;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public interface UserService {
-    void saveNewUser (User user);
+    List<User> getAllUsers();
 
-    void updateExistingUser(User user);
+    User getUser(Long id);
 
-    List<User> findAllUsers();
+    User addUser(User user);
 
-    User getUserById(Long id);
+    void deleteUser(Long id);
 
-    User getUserByUsername(String username);
+    User updateUser(User user);
 
-    void removeUserById(Long id);
+    User findByUsername(String username);
+
+    User findById(Long id);
 
 }

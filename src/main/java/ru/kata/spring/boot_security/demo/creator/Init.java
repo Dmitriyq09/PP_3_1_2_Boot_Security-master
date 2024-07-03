@@ -33,9 +33,9 @@ public class Init {
         Set<Role> adminRoles = new HashSet<>();
         Set<Role> userRoles = new HashSet<>();
 
-        userRoles.add(roleService.findRoleById(1L).get());
-        adminRoles.add(roleService.findRoleById(1L).get());
-        adminRoles.add(roleService.findRoleById(2L).get());
+        userRoles.add(roleService.findRoleById(1L));
+        adminRoles.add(roleService.findRoleById(1L));
+        adminRoles.add(roleService.findRoleById(2L));
 
         User user1 = new User("Admin", "Adminich", "admin", "admin");
         User user2 = new User("User", "Userovich", "user", "user");
@@ -43,8 +43,8 @@ public class Init {
         user1.setRoles(adminRoles);
         user2.setRoles(userRoles);
 
-        userService.saveNewUser (user1);
-        userService.saveNewUser (user2);
+        userService.addUser (user1);
+        userService.addUser (user2);
 
     }
 }

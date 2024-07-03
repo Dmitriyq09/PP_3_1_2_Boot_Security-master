@@ -1,7 +1,9 @@
 package ru.kata.spring.boot_security.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
-import java.util.HashSet;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,15 +13,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Firstname shouldn't be empty")
     private String firstName;
+    @NotEmpty(message = "Lastname shouldn't be empty")
     private String lastName;
+    @NotEmpty(message = "Username shouldn't be empty")
     private String username;
+    @NotEmpty(message = "Write password")
     private String password;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @JsonManagedReference
+    private Set<Role> roles;
 
     public User() {
     }

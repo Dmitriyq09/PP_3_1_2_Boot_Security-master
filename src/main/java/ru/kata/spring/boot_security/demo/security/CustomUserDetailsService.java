@@ -3,11 +3,9 @@ package ru.kata.spring.boot_security.demo.security;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import java.util.Optional;
 
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -18,19 +16,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.getUserByUsername(username);
+        User user = userRepository.findUserByUsername(username);
+        CustomUserDetails userDetails = new CustomUserDetails(user);
 
-        if (optionalUser.isEmpty()) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
         }
-        User user = optionalUser.get();
-
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
 
         return new org.springframework.security.core.userdetails.User(
-                customUserDetails.getUsername(),
-                customUserDetails.getPassword(),
-                customUserDetails.getAuthorities());
+                userDetails.getUsername(),
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
+        );
     }
-
 }

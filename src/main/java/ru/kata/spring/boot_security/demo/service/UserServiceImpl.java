@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.entities.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -25,48 +24,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void saveNewUser (User user) {
-
-        if (userRepository.getUserByUsername(user.getUsername()).isPresent()) {
-            return;
-        }
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
-
-    @Override
-    @Transactional
-    public void updateExistingUser (User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+    @Transactional(readOnly = true)
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAllUsers() {
-        return (List<User>) userRepository.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new UsernameNotFoundException("User not found"));
+    public User getUser(Long id) {
+        return userRepository.getById(id);
     }
 
     @Override
     @Transactional
-    public void removeUserById(Long id) {
+    public User addUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
 
     @Override
     @Transactional(readOnly = true)
-    public User getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username).get();
+    public User findByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
+                new UsernameNotFoundException("User not found"));
+    }
 }
-

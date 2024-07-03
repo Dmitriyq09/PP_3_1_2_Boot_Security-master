@@ -1,12 +1,12 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.entities.Role;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -17,13 +17,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Role> getAllRoles() {
-        return (List<Role>) roleRepository.findAll();
+        return roleRepository.findAll();
     }
 
     @Override
-    public Optional<Role> findRoleById(Long id) {
-        return roleRepository.findById(id);
+    @Transactional(readOnly = true)
+    public Role findRoleById(Long id) {
+        Role role = roleRepository.getById(id);
+        Hibernate.initialize(role);
+        return role;
     }
 
     @Override
